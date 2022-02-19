@@ -36,6 +36,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# data
-data
+data/db
 certs
