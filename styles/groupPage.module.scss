@@ -1,0 +1,37 @@
+.table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 1rem;
+	background-color: transparent;
+
+	& tr {
+		text-align: center;
+		border-bottom: 1px solid #dee2e6;
+
+		& th {
+			vertical-align: bottom;
+			border-bottom: 2px solid #dee2e6;
+		}
+
+		& td {
+			vertical-align: top;
+		}
+	}
+}
+
+.tableFullWidth {
+	@extend .table;
+	width: 100%;
+}
+
+.header {
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #dee2e6;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.75rem 1rem;
+	margin-bottom: 1rem;
+}

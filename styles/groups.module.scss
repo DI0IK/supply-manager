@@ -1,0 +1,65 @@
+.groupList {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.isOwner {
+	& a {
+		position: relative;
+		color: rgb(76, 235, 61);
+		// Display a crown icon
+		&:before {
+			position: absolute;
+			content: '';
+			display: block;
+			width: 1.2rem;
+			height: 1.2rem;
+			background-image: url('/crown.svg');
+			background-size: cover;
+			background-position: center;
+			left: -1.2rem;
+		}
+	}
+}
+.isNotOwner {
+	& a {
+		position: relative;
+		color: rgb(61, 235, 197);
+		// Display a lock icon
+		&:before {
+			position: absolute;
+			content: '';
+			display: block;
+			width: 1.2rem;
+			height: 1.2rem;
+			background-image: url('/lock.svg');
+			background-size: cover;
+			background-position: center;
+			left: -1.2rem;
+		}
+	}
+}
+.createNew {
+	& a {
+		position: relative;
+		color: rgb(235, 61, 61);
+		// Display a plus icon
+		&:before {
+			position: absolute;
+			content: '';
+			display: block;
+			width: 1.2rem;
+			height: 1.2rem;
+			background-image: url('/plus.svg');
+			background-size: cover;
+			background-position: center;
+			left: -1.2rem;
+		}
+	}
+}

@@ -1,0 +1,39 @@
+version: '3.4'
+
+x-my-sql: &my-sql
+   POSTGRES_PASSWORD: 'dominik'
+   POSTGRES_USER: 'dominik'
+   POSTGRES_DB: 'data'
+   DEV: 'true'
+
+services:
+   food-manager:
+      build: .
+      depends_on:
+         - db
+      ports:
+         - '3000:3000'
+      volumes:
+         - ./pages:/app/pages
+         - ./public:/app/public
+         - ./styles:/app/styles
+         - ./data:/app/data
+         - ./components:/app/components
+      environment: *my-sql
+      networks:
+         - food-network
+   db:
+      image: postgres:14
+      environment: *my-sql
+      ports:
+         - '5432:5432'
+      volumes:
+         - './data/db:/var/lib/postgresql/data'
+         - './data/entrypoints:/docker-entrypoint-initdb.d'
+      restart: always
+      networks:
+         - food-network
+
+networks:
+   food-network:
+      driver: bridge
