@@ -54,7 +54,8 @@ export default function GroupPage(props: {
 	const router = useRouter();
 	const translation = translations[router.locale || 'en-US'];
 
-	const [state, setState] = useState('barcode');
+	const [sort, setSorting] = useState('barcode');
+	const [sortDirection, setSortDirection] = useState(1);
 
 	const deleteGroup = (e: any) => {
 		e.preventDefault();
@@ -82,6 +83,15 @@ export default function GroupPage(props: {
 		}
 	};
 
+	function changeSorting(sortAfter: string) {
+		if (sort === sortAfter) {
+			setSortDirection(-1 * sortDirection);
+		} else {
+			setSortDirection(1);
+			setSorting(sortAfter);
+		}
+	}
+
 	return (
 		<>
 			<Head>
@@ -105,25 +115,75 @@ export default function GroupPage(props: {
 					<table className={groupPage.table}>
 						<thead>
 							<tr>
-								<th onClick={() => setState('barcode')}>{translation.barcode}</th>
-								<th onClick={() => setState('name')}>{translation.name}</th>
-								<th onClick={() => setState('quantity')}>{translation.quantity}</th>
-								<th onClick={() => setState('expirationDate')}>
+								<th
+									onClick={() => changeSorting('barcode')}
+									className={
+										sort === 'barcode'
+											? groupPage['sortDirection_' + sortDirection]
+											: undefined
+									}
+								>
+									{translation.barcode}
+								</th>
+								<th
+									onClick={() => changeSorting('name')}
+									className={
+										sort === 'name'
+											? groupPage['sortDirection_' + sortDirection]
+											: undefined
+									}
+								>
+									{translation.name}
+								</th>
+								<th
+									onClick={() => changeSorting('quantity')}
+									className={
+										sort === 'quantity'
+											? groupPage['sortDirection_' + sortDirection]
+											: undefined
+									}
+								>
+									{translation.quantity}
+								</th>
+								<th
+									onClick={() => changeSorting('expirationDate')}
+									className={
+										sort === 'expirationDate'
+											? groupPage['sortDirection_' + sortDirection]
+											: undefined
+									}
+								>
 									{translation.expirationDate}
 								</th>
-								<th onClick={() => setState('amountPerUnit')}>
+								<th
+									onClick={() => changeSorting('amountPerUnit')}
+									className={
+										sort === 'amountPerUnit'
+											? groupPage['sortDirection_' + sortDirection]
+											: undefined
+									}
+								>
 									{translation.amountPerUnit}
 								</th>
-								<th onClick={() => setState('nutriscore')}>Nutriscore</th>
+								<th
+									onClick={() => changeSorting('nutriscore')}
+									className={
+										sort === 'nutriscore'
+											? groupPage['sortDirection_' + sortDirection]
+											: undefined
+									}
+								>
+									Nutriscore
+								</th>
 							</tr>
 						</thead>
 						<tbody>
 							{props.products
 								.sort((a, b) => {
-									if ((a as any)[state] < (b as any)[state]) {
+									if ((a as any)[sort] < (b as any)[sort]) {
 										return -1;
 									}
-									if ((a as any)[state] > (b as any)[state]) {
+									if ((a as any)[sort] > (b as any)[sort]) {
 										return 1;
 									}
 									return 0;

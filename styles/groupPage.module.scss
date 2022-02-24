@@ -109,3 +109,20 @@
 		color: #6c757d;
 	}
 }
+
+.sortDirection {
+	&_-1 {
+		&::before {
+			content: '▴';
+			position: relative;
+			bottom: 6px;
+		}
+	}
+	&_1 {
+		&::before {
+			content: '▾';
+			position: relative;
+			top: 2px;
+		}
+	}
+}
