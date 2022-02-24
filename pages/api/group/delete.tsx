@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createGroup, deleteGroup, getGroup } from '../../../managers/groupManager';
+import { deleteGroup, getGroup } from '../../../managers/groupManager';
 import { validateSession } from '../../../managers/userManager';
 
 export default async function Create(req: NextApiRequest, res: NextApiResponse) {

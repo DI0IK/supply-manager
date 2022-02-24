@@ -29,15 +29,17 @@ const translations: {
 export default function Header({
 	data,
 	children,
+	className,
 }: {
 	data: { user: User; session: Session };
 	children?: any;
+	className?: string;
 }) {
 	const router = useRouter();
 	const translation = translations[router.locale || 'en-US'];
 
 	return (
-		<div>
+		<div className={className || ''}>
 			<div>
 				<ul id="header">
 					<li>
@@ -96,7 +98,7 @@ export default function Header({
 											key={locale}
 											className={locale === router.locale ? utilCss.selected : ''}
 										>
-											<Link locale={locale} href={router.pathname}>
+											<Link locale={locale} href={router.asPath}>
 												<a>{locale}</a>
 											</Link>
 										</li>

@@ -2,6 +2,14 @@
 	background-color: #f5f5f5;
 	padding: 20px;
 
+	span {
+		width: 60%;
+		height: 0.5rem;
+		border-bottom: 3px solid lightgray;
+		display: block;
+		margin: 0.5rem auto;
+	}
+
 	form {
 		display: flex;
 		flex-direction: column;
@@ -13,10 +21,15 @@
 
 		button {
 			margin-top: 20px;
+			padding: 0.4rem;
+			width: 60%;
 		}
 
 		input {
 			margin-top: 20px;
+			padding: 0.4rem;
+			text-align: center;
+			width: 60%;
 		}
 
 		.input-group {

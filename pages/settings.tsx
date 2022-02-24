@@ -17,6 +17,8 @@ const translations: {
 		changePassword: 'Change password',
 		confirmDelete: 'Are you sure you want to delete your account? This action cannot be undone.',
 		changePasswordConfirmIncorrect: 'The passwords do not match.',
+		newPassword: 'New Password',
+		confirmNewPassword: 'Confirm new Password',
 	},
 	'de-DE': {
 		Title: 'Einstellungen',
@@ -26,6 +28,8 @@ const translations: {
 		confirmDelete:
 			'Möchtest du dein Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.',
 		changePasswordConfirmIncorrect: 'Die Passwörter stimmen nicht überein.',
+		newPassword: 'Neues Passwort',
+		confirmNewPassword: 'Neues Passwort wiederholen',
 	},
 };
 
@@ -90,12 +94,12 @@ export default function Login(props: { session: Session; user: User }) {
 					<form onSubmit={deleteUserAccount}>
 						<button>{translation.deleteAccount}</button>
 					</form>
-					<br />
+					<span />
 					<form onSubmit={changePassword}>
-						<input type="password" placeholder="New password" name="passwordNew" />
+						<input type="password" placeholder={translation.newPassword} name="passwordNew" />
 						<input
 							type="password"
-							placeholder="Confirm new password"
+							placeholder={translation.confirmNewPassword}
 							name="passwordNewConfirm"
 						/>
 						<button>{translation.changePassword}</button>

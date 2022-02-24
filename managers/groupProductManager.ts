@@ -10,7 +10,12 @@ const pool = new pg.Pool({
 	port: 5432,
 });
 
-export function addProduct(product: Product, quantity: number, expirationDate: Date, group: Group) {
+export function addProduct(
+	product: Product,
+	quantity: number,
+	expirationDate: Date,
+	group: Group
+): Promise<boolean> {
 	return new Promise(async (resolve, reject) => {
 		pool.query(
 			'SELECT * FROM groups_products WHERE group_id = $1 AND product_barcode = $2 AND expiration_date = $3',
@@ -18,7 +23,7 @@ export function addProduct(product: Product, quantity: number, expirationDate: D
 			(err, res) => {
 				if (err) {
 					console.log(err);
-					return resolve(null);
+					return resolve(false);
 				}
 				if (res.rows.length === 0) {
 					pool.query(
@@ -27,9 +32,9 @@ export function addProduct(product: Product, quantity: number, expirationDate: D
 						(err, res) => {
 							if (err) {
 								console.log(err);
-								return resolve(null);
+								return resolve(false);
 							}
-							return resolve(res);
+							return resolve(true);
 						}
 					);
 				} else {
@@ -39,9 +44,9 @@ export function addProduct(product: Product, quantity: number, expirationDate: D
 						(err, res) => {
 							if (err) {
 								console.log(err);
-								return resolve(null);
+								return resolve(false);
 							}
-							return resolve(res);
+							return resolve(true);
 						}
 					);
 				}
@@ -55,7 +60,7 @@ export function removeProduct(
 	quantity: number,
 	expirationDate: Date,
 	group: Group
-) {
+): Promise<boolean> {
 	return new Promise(async (resolve, reject) => {
 		pool.query(
 			'SELECT * FROM groups_products WHERE group_id = $1 AND product_barcode = $2 AND expiration_date = $3',
@@ -63,22 +68,39 @@ export function removeProduct(
 			(err, res) => {
 				if (err) {
 					console.log(err);
-					return resolve(null);
+					return resolve(false);
 				}
 				if (res.rows.length === 0) {
-					return resolve(null);
+					return resolve(false);
 				} else {
-					pool.query(
-						'UPDATE groups_products SET quantity = $1 WHERE group_id = $2 AND product_barcode = $3 AND expiration_date = $4',
-						[res.rows[0].quantity - quantity, group.id, product.barcode, expirationDate],
-						(err, res) => {
-							if (err) {
-								console.log(err);
-								return resolve(null);
+					if (res.rows[0].quantity - quantity === 0) {
+						pool.query(
+							'DELETE FROM groups_products WHERE group_id = $1 AND product_barcode = $2 AND expiration_date = $3',
+							[group.id, product.barcode, expirationDate],
+							(err, res) => {
+								if (err) {
+									console.log(err);
+									return resolve(false);
+								}
+								return resolve(true);
 							}
-							return resolve(res);
-						}
-					);
+						);
+					}
+					if (res.rows[0].quantity - quantity < 0) {
+						return resolve(false);
+					} else {
+						pool.query(
+							'UPDATE groups_products SET quantity = $1 WHERE group_id = $2 AND product_barcode = $3 AND expiration_date = $4',
+							[res.rows[0].quantity - quantity, group.id, product.barcode, expirationDate],
+							(err, res) => {
+								if (err) {
+									console.log(err);
+									return resolve(false);
+								}
+								return resolve(true);
+							}
+						);
+					}
 				}
 			}
 		);
@@ -104,6 +126,6 @@ export function getProducts(group: Group): Promise<(Product & GroupProduct)[] | 
 export interface GroupProduct {
 	group_id: string;
 	product_barcode: string;
-	amount: number;
+	quantity: number;
 	expiration_date: Date;
 }

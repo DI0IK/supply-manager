@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS "products" (
     "completeness" float NOT NULL,
     "nutriscore" character NOT NULL,
     "product_name" character varying(255) NOT NULL,
-    "quantity" character varying(255) NOT NULL,
+    "quantity_per_unit" character varying(255) NOT NULL,
     "cached_at" timestamp with time zone NOT NULL,
     CONSTRAINT "products_pkey" PRIMARY KEY ("barcode")
 );

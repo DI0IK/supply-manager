@@ -26,7 +26,7 @@ function getItemFromAPI(barcode: string): Promise<Product | null> {
 						completeness: res.data?.product?.completeness || '',
 						nutriscore: res.data?.product?.nutriscore_grade || '',
 						product_name: res.data?.product?.product_name || '',
-						quantity: res.data?.product?.quantity || '',
+						quantity_per_unit: res.data?.product?.quantity || '',
 					};
 					return resolve(item);
 				} else {
@@ -53,7 +53,7 @@ export function getProduct(
 				const item = await getItemFromAPI(barcode);
 				if (item) {
 					pool.query(
-						`INSERT INTO products (barcode, brands, categories, completeness, nutriscore, product_name, cached_at, quantity) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+						`INSERT INTO products (barcode, brands, categories, completeness, nutriscore, product_name, cached_at, quantity_per_unit) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
 						[
 							item.barcode,
 							item.brands,
@@ -62,7 +62,7 @@ export function getProduct(
 							item.nutriscore,
 							item.product_name,
 							new Date(),
-							item.quantity,
+							item.quantity_per_unit,
 						],
 						(err, res) => {
 							if (err) {
@@ -76,14 +76,14 @@ export function getProduct(
 				const item = await getItemFromAPI(barcode);
 				if (item) {
 					pool.query(
-						`UPDATE products SET brands = $1, categories = $2, completeness = $3, nutriscore = $4, product_name = $5, quantity = $6, cached_at = $7 WHERE barcode = $8`,
+						`UPDATE products SET brands = $1, categories = $2, completeness = $3, nutriscore = $4, product_name = $5, quantity_per_unit = $6, cached_at = $7 WHERE barcode = $8`,
 						[
 							item.brands,
 							item.categories,
 							item.completeness,
 							item.nutriscore,
 							item.product_name,
-							item.quantity,
+							item.quantity_per_unit,
 							new Date(),
 							item.barcode,
 						],
@@ -107,7 +107,8 @@ export interface Product {
 	brands: string;
 	categories: string;
 	completeness: number;
-	nutriscore: number;
+	nutriscore: string;
 	product_name: string;
-	quantity: string;
+	quantity_per_unit: string;
+	cached_at?: Date;
 }
