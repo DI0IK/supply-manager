@@ -9,6 +9,7 @@ import { Product } from '../../../managers/openfoodfacts';
 import groupPage from '../../../styles/groupPage.module.scss';
 import Link from 'next/link';
 import { useState } from 'react';
+import { TRUE } from 'sass';
 
 const translations: {
 	[key: string]: {
@@ -25,6 +26,7 @@ const translations: {
 		quantity: 'Quantity',
 		amountPerUnit: 'Amount per unit',
 		expirationDate: 'Expiration date',
+		amountWanted: 'Amount wanted',
 
 		scanProduct: 'Scan product',
 		deleteGroup: 'Delete group',
@@ -39,6 +41,7 @@ const translations: {
 		quantity: 'Menge',
 		amountPerUnit: 'Menge pro Einheit',
 		expirationDate: 'Ablaufdatum',
+		amountWanted: 'Gewünschte Menge',
 
 		scanProduct: 'Produkt scannen',
 		deleteGroup: 'Gruppe löschen',
@@ -90,6 +93,33 @@ export default function GroupPage(props: {
 			setSortDirection(1);
 			setSorting(sortAfter);
 		}
+	}
+
+	function updateAmountWanted(e: any, barcode: string, expDate: Date) {
+		e.preventDefault();
+
+		const amountWanted = e.target.value;
+
+		fetch('/api/group/updateAmountWanted', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				groupId: props.group.id,
+				barcode,
+				amountWanted,
+				expDate: expDate.toISOString(),
+			}),
+		})
+			.then((data) => data.json())
+			.then((data) => {
+				if (data.success) {
+					e.target.value = amountWanted;
+				} else {
+					alert(data.error);
+				}
+			});
 	}
 
 	return (
@@ -175,6 +205,16 @@ export default function GroupPage(props: {
 								>
 									Nutriscore
 								</th>
+								<th
+									onClick={() => changeSorting('amountWanted')}
+									className={
+										sort === 'amountWanted'
+											? groupPage['sortDirection_' + sortDirection]
+											: undefined
+									}
+								>
+									{translation.amountWanted}
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -211,6 +251,23 @@ export default function GroupPage(props: {
 										<td>{product.quantity_per_unit}</td>
 										<td className={groupPage['nutriscore_' + product.nutriscore]}>
 											{product.nutriscore.toUpperCase()}
+										</td>
+										<td>
+											{
+												<input
+													type="number"
+													value={product.amount_wanted}
+													onChange={(e) =>
+														updateAmountWanted(
+															e,
+															product.barcode,
+															new Date(product.expiration_date)
+														)
+													}
+													onKeyPress={(e) => e.preventDefault()}
+													min={0}
+												/>
+											}
 										</td>
 									</tr>
 								))}

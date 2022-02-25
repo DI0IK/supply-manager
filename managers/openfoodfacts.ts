@@ -102,6 +102,18 @@ export function getProduct(
 	});
 }
 
+export function getProducts(): Promise<Product[]> {
+	return new Promise(async (resolve, reject) => {
+		pool.query(`SELECT * FROM products`, [], (err, res) => {
+			if (err) {
+				console.log(err);
+				return resolve([]);
+			}
+			resolve(res.rows);
+		});
+	});
+}
+
 export interface Product {
 	barcode: string;
 	brands: string;

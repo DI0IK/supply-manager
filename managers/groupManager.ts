@@ -139,6 +139,26 @@ export function getGroup(groupId: number): Promise<Group | null> {
 	});
 }
 
+export function getAllGroups(): Promise<Group[]> {
+	return new Promise(async (resolve, reject) => {
+		pool.query('SELECT * FROM groups', (err, res) => {
+			if (err) {
+				console.log(err);
+				return resolve([]);
+			}
+			const groups = res.rows.map((row) => {
+				return {
+					id: row.id,
+					name: row.name,
+					created_at: row.created_at.toISOString(),
+					owner_id: row.owner_id,
+				};
+			});
+			return resolve(groups);
+		});
+	});
+}
+
 export interface Group {
 	id: number;
 	name: string;

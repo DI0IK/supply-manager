@@ -174,21 +174,36 @@ export function validateSession(
 
 					return resolve(null);
 				});
+			} else {
+				pool.query(
+					'UPDATE sessions SET expires_at = $1 WHERE token = $2',
+					[new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), sessionToken],
+					(err, res3) => {
+						if (err) {
+							console.log(err);
+							return resolve(null);
+						}
+						pool.query(
+							'SELECT * FROM users WHERE id = $1',
+							[session.user_id],
+							(err, res2) => {
+								if (err) {
+									console.log(err);
+									return resolve(null);
+								}
+								if (res2.rows.length === 0) return resolve(null);
+								let session = res.rows[0];
+								session.expires_at = session.expires_at.toISOString();
+								session.created_at = session.created_at.toISOString();
+								let user = res2.rows[0];
+								user.created_at = user.created_at.toISOString();
+								user.updated_at = user.updated_at.toISOString();
+								return resolve({ user: user, session: session });
+							}
+						);
+					}
+				);
 			}
-			pool.query('SELECT * FROM users WHERE id = $1', [session.user_id], (err, res2) => {
-				if (err) {
-					console.log(err);
-					return resolve(null);
-				}
-				if (res2.rows.length === 0) return resolve(null);
-				let session = res.rows[0];
-				session.expires_at = session.expires_at.toISOString();
-				session.created_at = session.created_at.toISOString();
-				let user = res2.rows[0];
-				user.created_at = user.created_at.toISOString();
-				user.updated_at = user.updated_at.toISOString();
-				return resolve({ user: user, session: session });
-			});
 		});
 	});
 }
@@ -232,6 +247,40 @@ export function changePassword(user: User, password: string): Promise<boolean> {
 				return resolve(false);
 			}
 			return resolve(true);
+		});
+	});
+}
+
+export function getUsers(): Promise<User[]> {
+	return new Promise((resolve, reject) => {
+		pool.query('SELECT * FROM users', (err, res) => {
+			if (err) {
+				console.log(err);
+				return resolve([]);
+			}
+			const users = res.rows.map((user) => {
+				user.created_at = user.created_at.toISOString();
+				user.updated_at = user.updated_at.toISOString();
+				return user;
+			});
+			return resolve(users);
+		});
+	});
+}
+
+export function getSessions(): Promise<Session[]> {
+	return new Promise((resolve, reject) => {
+		pool.query('SELECT * FROM sessions', (err, res) => {
+			if (err) {
+				console.log(err);
+				return resolve([]);
+			}
+			const sessions = res.rows.map((session) => {
+				session.created_at = session.created_at.toISOString();
+				session.expires_at = session.expires_at.toISOString();
+				return session;
+			});
+			return resolve(sessions);
 		});
 	});
 }

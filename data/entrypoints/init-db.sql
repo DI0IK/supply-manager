@@ -50,5 +50,6 @@ CREATE TABLE IF NOT EXISTS "groups_products" (
     "product_barcode" character varying(255) NOT NULL,
     "quantity" integer NOT NULL,
     "expiration_date" timestamp with time zone NOT NULL,
+    "amount_wanted" integer NOT NULL,
     CONSTRAINT "groups_products_pkey" PRIMARY KEY ("id")
 );
