@@ -14,7 +14,20 @@ export default function Admin(props: {
 		groupProducts: any[] | undefined;
 	};
 }) {
-	return <pre>{JSON.stringify(props.data, null, 2)}</pre>;
+	return (
+		<pre
+			style={{
+				overflowX: 'scroll',
+				overflowY: 'scroll',
+				margin: 0,
+				padding: 0,
+				height: '100vh',
+				width: '100vw',
+			}}
+		>
+			{JSON.stringify(props.data, null, 2)}
+		</pre>
+	);
 }
 
 export async function getServerSideProps({ req, query }: GetServerSidePropsContext) {

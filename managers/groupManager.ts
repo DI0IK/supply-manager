@@ -104,12 +104,29 @@ export function getGroups(user: User): Promise<Group[] | null> {
 	});
 }
 
-export function joinGroup(user: User, group: Group): Promise<boolean> {
+export function joinGroup(user: number, group: Group): Promise<boolean> {
 	return new Promise(async (resolve, reject) => {
 		if (!user) return resolve(false);
 		pool.query(
 			'INSERT INTO users_groups (user_id, group_id) VALUES ($1, $2)',
-			[user.id, group.id],
+			[user, group.id],
+			(err, res) => {
+				if (err) {
+					console.log(err);
+					return resolve(false);
+				}
+				return resolve(true);
+			}
+		);
+	});
+}
+
+export function leaveGroup(user: number, group: Group): Promise<boolean> {
+	return new Promise(async (resolve, reject) => {
+		if (!user) return resolve(false);
+		pool.query(
+			'DELETE FROM users_groups WHERE user_id = $1 AND group_id = $2',
+			[user, group.id],
 			(err, res) => {
 				if (err) {
 					console.log(err);
@@ -155,6 +172,21 @@ export function getAllGroups(): Promise<Group[]> {
 				};
 			});
 			return resolve(groups);
+		});
+	});
+}
+
+export function getUsersInGroup(group: Group): Promise<number[]> {
+	return new Promise(async (resolve, reject) => {
+		pool.query('SELECT user_id FROM users_groups WHERE group_id = $1', [group.id], (err, res) => {
+			if (err) {
+				console.log(err);
+				return resolve([]);
+			}
+			const users = res.rows.map((row) => {
+				return row.user_id;
+			});
+			return resolve(users);
 		});
 	});
 }

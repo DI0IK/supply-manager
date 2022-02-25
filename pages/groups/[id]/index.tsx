@@ -30,6 +30,9 @@ const translations: {
 
 		scanProduct: 'Scan product',
 		deleteGroup: 'Delete group',
+		addUser: 'Add user',
+
+		actions: 'Actions',
 	},
 	'de-DE': {
 		Title: 'Gruppe $name',
@@ -45,6 +48,9 @@ const translations: {
 
 		scanProduct: 'Produkt scannen',
 		deleteGroup: 'Gruppe löschen',
+		addUser: 'Benutzer hinzufügen',
+
+		actions: 'Aktionen',
 	},
 };
 
@@ -122,6 +128,56 @@ export default function GroupPage(props: {
 			});
 	}
 
+	const add1ToSupply = (e: any, barcode: string, expDate: Date) => {
+		e.preventDefault();
+
+		fetch('/api/group/addToSupply', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				groupId: props.group.id,
+				barcode,
+				expDate: expDate.toISOString(),
+				amount: 1,
+			}),
+		})
+			.then((data) => data.json())
+			.then((data) => {
+				if (data.success) {
+					router.reload();
+				} else {
+					alert(data.error);
+				}
+			});
+	};
+
+	const remove1FromSupply = (e: any, barcode: string, expDate: Date) => {
+		e.preventDefault();
+
+		fetch('/api/group/removeFromSupply', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				groupId: props.group.id,
+				barcode,
+				expDate: expDate.toISOString(),
+				amount: 1,
+			}),
+		})
+			.then((data) => data.json())
+			.then((data) => {
+				if (data.success) {
+					router.reload();
+				} else {
+					alert(data.error);
+				}
+			});
+	};
+
 	return (
 		<>
 			<Head>
@@ -138,7 +194,12 @@ export default function GroupPage(props: {
 						<a className={groupPage.button}>{translation.scanProduct}</a>
 					</Link>
 					{props.group.owner_id === props.user.id ? (
-						<button onClick={deleteGroup}>{translation.deleteGroup}</button>
+						<>
+							<button onClick={deleteGroup}>{translation.deleteGroup}</button>
+							<Link href={`/groups/${props.group.id}/addUser`}>
+								<a className={groupPage.button}>{translation.addUser}</a>
+							</Link>
+						</>
 					) : null}
 				</div>
 				<div className={groupPage.tableWrapper}>
@@ -215,6 +276,7 @@ export default function GroupPage(props: {
 								>
 									{translation.amountWanted}
 								</th>
+								<th>{translation.actions}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -268,6 +330,30 @@ export default function GroupPage(props: {
 													min={0}
 												/>
 											}
+										</td>
+										<td>
+											<button
+												onClick={(e) =>
+													add1ToSupply(
+														e,
+														product.barcode,
+														new Date(product.expiration_date)
+													)
+												}
+											>
+												+
+											</button>
+											<button
+												onClick={(e) =>
+													remove1FromSupply(
+														e,
+														product.barcode,
+														new Date(product.expiration_date)
+													)
+												}
+											>
+												—
+											</button>
 										</td>
 									</tr>
 								))}

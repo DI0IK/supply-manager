@@ -11,6 +11,20 @@ export default function DatePicker({
 	defaultValue?: string;
 	placeholders?: string[];
 }) {
+	const keyUp = (e: any, maxChars: number, nextId: string) => {
+		if (e.target.value.length >= maxChars) {
+			e.preventDefault();
+			const nextElement = document.getElementsByClassName(nextId)[0] as
+				| HTMLInputElement
+				| HTMLButtonElement;
+			if (!nextElement) return;
+			nextElement.focus();
+			if (nextElement.tagName == 'INPUT') {
+				nextElement.value = '';
+			}
+		}
+	};
+
 	return (
 		<div id={id} className={(className ?? '') + ' ' + css.dateInput}>
 			<input
@@ -20,6 +34,7 @@ export default function DatePicker({
 				min="1"
 				max="31"
 				placeholder={placeholders?.[0] ?? 'DD'}
+				onKeyUp={(e) => keyUp(e, 2, 'month')}
 			/>
 			<span>.</span>
 			<input
@@ -29,6 +44,7 @@ export default function DatePicker({
 				min="1"
 				max="12"
 				placeholder={placeholders?.[1] ?? 'MM'}
+				onKeyUp={(e) => keyUp(e, 2, 'year')}
 			/>
 			<span>.</span>
 			<input
@@ -38,6 +54,7 @@ export default function DatePicker({
 				min="1"
 				max="9999"
 				placeholder={placeholders?.[2] ?? 'YYYY'}
+				onKeyUp={(e) => keyUp(e, 4, 'done')}
 			/>
 		</div>
 	);

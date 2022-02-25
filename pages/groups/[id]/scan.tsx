@@ -225,7 +225,7 @@ export default function GroupScanPage(props: {
 					/>
 					<input
 						id="amount"
-						className={groupPage.amount}
+						className={groupPage.amount + ' done'}
 						type="number"
 						placeholder={translation.amount}
 					/>
