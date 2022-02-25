@@ -30,7 +30,7 @@ const translations: {
 
 		scanProduct: 'Scan product',
 		deleteGroup: 'Delete group',
-		addUser: 'Add user',
+		manageUsers: 'Manage users',
 
 		actions: 'Actions',
 	},
@@ -48,7 +48,7 @@ const translations: {
 
 		scanProduct: 'Produkt scannen',
 		deleteGroup: 'Gruppe löschen',
-		addUser: 'Benutzer hinzufügen',
+		manageUsers: 'Benutzer verwalten',
 
 		actions: 'Aktionen',
 	},
@@ -196,8 +196,8 @@ export default function GroupPage(props: {
 					{props.group.owner_id === props.user.id ? (
 						<>
 							<button onClick={deleteGroup}>{translation.deleteGroup}</button>
-							<Link href={`/groups/${props.group.id}/addUser`}>
-								<a className={groupPage.button}>{translation.addUser}</a>
+							<Link href={`/groups/${props.group.id}/manageUsers`}>
+								<a className={groupPage.button}>{translation.manageUsers}</a>
 							</Link>
 						</>
 					) : null}
