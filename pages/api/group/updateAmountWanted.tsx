@@ -36,7 +36,12 @@ export default async function updateAmountWanted(req: NextApiRequest, res: NextA
 		return;
 	}
 
-	const success = await setAmountWanted(product.data, amountWanted, new Date(expDate), group);
+	const success = await setAmountWanted(
+		product.data,
+		Number.parseInt(amountWanted),
+		new Date(expDate),
+		group
+	);
 
 	if (!success) {
 		res.status(500).json({

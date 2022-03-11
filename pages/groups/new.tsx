@@ -60,7 +60,7 @@ export default function NewGroup(props: { session: Session; user: User }) {
 					return alert(data.error);
 				}
 
-				router.push('/groups/[id]', `/groups/${data.id}`);
+				router.push('/groups/');
 			});
 	};
 

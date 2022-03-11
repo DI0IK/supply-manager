@@ -1,11 +1,12 @@
 {
-	"name": "food-manager-next",
+	"name": "supply-manager",
 	"private": true,
 	"scripts": {
 		"build": "next build",
 		"start": "node server.js",
 		"lint": "next lint",
-		"start:dev": "sudo docker-compose --file docker-compose.dev.yaml up --build && sudo docker-compose --file docker-compose.dev.yaml down && sudo docker image prune -f"
+		"start:dev": "sudo docker-compose --file docker-compose.dev.yaml up --build && sudo docker-compose --file docker-compose.dev.yaml down && sudo docker image prune -f",
+		"start:prod": "sudo docker build -t supply-manager . && sudo docker-compose --file docker-compose.prod.yaml up --detach"
 	},
 	"dependencies": {
 		"axios": "^0.25.0",

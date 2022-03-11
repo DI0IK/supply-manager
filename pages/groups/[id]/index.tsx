@@ -9,7 +9,6 @@ import { Product } from '../../../managers/openfoodfacts';
 import groupPage from '../../../styles/groupPage.module.scss';
 import Link from 'next/link';
 import { useState } from 'react';
-import { TRUE } from 'sass';
 
 const translations: {
 	[key: string]: {
@@ -178,6 +177,18 @@ export default function GroupPage(props: {
 			});
 	};
 
+	const sortedProducts = [...props.products];
+	sortedProducts.sort((a, b) => {
+		console.log(sort, sortDirection);
+		if ((a as any)[sort] < (b as any)[sort]) {
+			return -1 * sortDirection;
+		}
+		if ((a as any)[sort] > (b as any)[sort]) {
+			return 1 * sortDirection;
+		}
+		return 0;
+	});
+
 	return (
 		<>
 			<Head>
@@ -280,83 +291,73 @@ export default function GroupPage(props: {
 							</tr>
 						</thead>
 						<tbody>
-							{props.products
-								.sort((a, b) => {
-									if ((a as any)[sort] < (b as any)[sort]) {
-										return -1;
-									}
-									if ((a as any)[sort] > (b as any)[sort]) {
-										return 1;
-									}
-									return 0;
-								})
-								.map((product) => (
-									<tr key={product.barcode}>
-										<td>{product.barcode}</td>
-										<td>{product.product_name}</td>
-										<td>{product.quantity}</td>
-										<td
-											className={
-												new Date(product.expiration_date).getTime() - Date.now() <= 0
-													? groupPage.expired
-													: new Date(product.expiration_date).getTime() - Date.now() <
-													  7 * 24 * 60 * 60 * 1000
-													? groupPage.expiresSoon
-													: groupPage.notExpired
+							{sortedProducts.map((product) => (
+								<tr key={product.barcode}>
+									<td>{product.barcode}</td>
+									<td>{product.product_name}</td>
+									<td>{product.quantity}</td>
+									<td
+										className={
+											new Date(product.expiration_date).getTime() - Date.now() <= 0
+												? groupPage.expired
+												: new Date(product.expiration_date).getTime() - Date.now() <
+												  7 * 24 * 60 * 60 * 1000
+												? groupPage.expiresSoon
+												: groupPage.notExpired
+										}
+									>
+										{new Date(
+											new Date(product.expiration_date).valueOf() +
+												new Date(product.expiration_date).getTimezoneOffset() * 60000
+										).toLocaleDateString()}
+									</td>
+									<td>{product.quantity_per_unit}</td>
+									<td className={groupPage['nutriscore_' + product.nutriscore]}>
+										{product.nutriscore.toUpperCase()}
+									</td>
+									<td>
+										{
+											<input
+												type="number"
+												value={product.amount_wanted}
+												onChange={(e) =>
+													updateAmountWanted(
+														e,
+														product.barcode,
+														new Date(product.expiration_date)
+													)
+												}
+												onKeyPress={(e) => e.preventDefault()}
+												min={0}
+											/>
+										}
+									</td>
+									<td>
+										<button
+											onClick={(e) =>
+												add1ToSupply(
+													e,
+													product.barcode,
+													new Date(product.expiration_date)
+												)
 											}
 										>
-											{new Date(
-												new Date(product.expiration_date).valueOf() +
-													new Date(product.expiration_date).getTimezoneOffset() * 60000
-											).toLocaleDateString()}
-										</td>
-										<td>{product.quantity_per_unit}</td>
-										<td className={groupPage['nutriscore_' + product.nutriscore]}>
-											{product.nutriscore.toUpperCase()}
-										</td>
-										<td>
-											{
-												<input
-													type="number"
-													value={product.amount_wanted}
-													onChange={(e) =>
-														updateAmountWanted(
-															e,
-															product.barcode,
-															new Date(product.expiration_date)
-														)
-													}
-													onKeyPress={(e) => e.preventDefault()}
-													min={0}
-												/>
+											+
+										</button>
+										<button
+											onClick={(e) =>
+												remove1FromSupply(
+													e,
+													product.barcode,
+													new Date(product.expiration_date)
+												)
 											}
-										</td>
-										<td>
-											<button
-												onClick={(e) =>
-													add1ToSupply(
-														e,
-														product.barcode,
-														new Date(product.expiration_date)
-													)
-												}
-											>
-												+
-											</button>
-											<button
-												onClick={(e) =>
-													remove1FromSupply(
-														e,
-														product.barcode,
-														new Date(product.expiration_date)
-													)
-												}
-											>
-												—
-											</button>
-										</td>
-									</tr>
-								))}
+										>
+											—
+										</button>
+									</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>
