@@ -37,4 +37,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 data/db
+data/dev-db
 certs
