@@ -5,8 +5,10 @@
 		"build": "next build",
 		"start": "node server.js",
 		"lint": "next lint",
-		"start:dev": "sudo docker-compose --file docker-compose.dev.yaml up --build && sudo docker-compose --file docker-compose.dev.yaml down && sudo docker image prune -f",
-		"start:prod": "sudo docker build -t supply-manager . && sudo docker-compose --file docker-compose.prod.yaml up --detach"
+		"docker:start:dev": "sudo docker-compose --file docker-compose.dev.yaml up --build && sudo docker-compose --file docker-compose.dev.yaml down && sudo docker image prune -f",
+		"docker:start:prod": "sudo docker build -t supply-manager . && sudo docker-compose --file docker-compose.prod.yaml up --detach",
+		"docker:build": "sudo docker build -t supply-manager .",
+		"docker:stop": "sudo docker-compose --file docker-compose.prod.yaml down"
 	},
 	"dependencies": {
 		"axios": "^0.25.0",

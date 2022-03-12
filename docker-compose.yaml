@@ -1,8 +1,8 @@
 version: '3.4'
 
 x-my-sql: &my-sql
-   POSTGRES_PASSWORD: 'dominik'
-   POSTGRES_USER: 'dominik'
+   POSTGRES_PASSWORD: 'user'
+   POSTGRES_USER: 'user'
    POSTGRES_DB: 'data'
 
 services:
