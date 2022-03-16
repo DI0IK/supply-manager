@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getGroup, leaveGroup } from '../../../managers/groupManager';
+import { getGroup, getUsersInGroup, leaveGroup } from '../../../managers/groupManager';
 import { validateSession } from '../../../managers/userManager';
 
 export default async function removeUserfromGroup(req: NextApiRequest, res: NextApiResponse) {
@@ -28,6 +28,15 @@ export default async function removeUserfromGroup(req: NextApiRequest, res: Next
 	if (group.owner_id !== user.user.id) {
 		res.status(403).json({
 			error: 'You are not the owner of this group',
+		});
+		return;
+	}
+
+	const groupUser = await getUsersInGroup(group);
+
+	if (!groupUser || !groupUser.find((u) => u === Number.parseInt(userId))) {
+		res.status(500).json({
+			error: 'User is not in group',
 		});
 		return;
 	}

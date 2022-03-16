@@ -37,14 +37,18 @@ export default function AddUserToGroup(props: {
 
 	const addUserToGroup = (e: any) => {
 		e.preventDefault();
-		const userId = (document.getElementById('userId') as HTMLInputElement).value;
+		const userId = props.users.find(
+			(user) => user.name === (document.getElementById('userId') as HTMLInputElement).value
+		)?.id;
 
-		if (!props.users.some((u) => u.id === parseInt(userId))) {
+		if (!userId) return;
+
+		if (!props.users.some((u) => u.id === userId)) {
 			alert('User not found');
 			return;
 		}
 
-		if (props.users.find((u) => u.id === parseInt(userId))?.inGroup) {
+		if (props.users.find((u) => u.id === userId)?.inGroup) {
 			alert('User is already in group');
 			return;
 		}
@@ -56,7 +60,7 @@ export default function AddUserToGroup(props: {
 			},
 			body: JSON.stringify({
 				groupId: props.group.id,
-				userId: parseInt(userId),
+				userId: userId,
 			}),
 		})
 			.then((res) => res.json())
@@ -71,14 +75,16 @@ export default function AddUserToGroup(props: {
 
 	const removeUserFromGroup = (e: any) => {
 		e.preventDefault();
-		const userId = (document.getElementById('userId') as HTMLInputElement).value;
+		const userId = props.users.find(
+			(user) => user.name === (document.getElementById('userId') as HTMLInputElement).value
+		)?.id;
 
-		if (!props.users.some((u) => u.id === parseInt(userId))) {
+		if (!props.users.some((u) => u.id === userId)) {
 			alert('User not found');
 			return;
 		}
 
-		if (!props.users.find((u) => u.id === parseInt(userId))?.inGroup) {
+		if (!props.users.find((u) => u.id === userId)?.inGroup) {
 			alert('User is not in group');
 			return;
 		}
@@ -90,7 +96,7 @@ export default function AddUserToGroup(props: {
 			},
 			body: JSON.stringify({
 				groupId: props.group.id,
-				userId: parseInt(userId),
+				userId: userId,
 			}),
 		})
 			.then((res) => res.json())
@@ -125,7 +131,7 @@ export default function AddUserToGroup(props: {
 				<h2>{translation.AddUserToGroup}</h2>
 				<datalist id="users">
 					{props.users.map((user) => (
-						<option key={user.id} value={user.id}>
+						<option key={user.id} value={user.name}>
 							{user.name}
 						</option>
 					))}
