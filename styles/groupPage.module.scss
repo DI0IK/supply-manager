@@ -1,36 +1,7 @@
+@use 'defaults/defaultStyles';
+
 .table {
-	border-collapse: collapse;
-	border-spacing: 0;
-	width: max-content;
-	min-width: 100%;
-	margin-bottom: 1rem;
-	background-color: transparent;
-
-	& tr {
-		text-align: center;
-		border-bottom: 1px solid #dee2e6;
-		width: max-content;
-
-		& th {
-			vertical-align: bottom;
-			border-bottom: 2px solid #dee2e6;
-			border-left: 1px solid #a5a8aa;
-			border-right: 1px solid #a5a8aa;
-			border-top: 1px solid #dee2e6;
-			padding: 0.75rem;
-			font-weight: 700;
-			width: max-content;
-			background-color: #f8f9fa;
-		}
-
-		& td {
-			vertical-align: top;
-			border-left: 1px solid #a5a8aa;
-			border-right: 1px solid #a5a8aa;
-			padding: 0.75rem;
-			width: max-content;
-		}
-	}
+	@include defaultStyles.table;
 }
 
 .tableWrapper {
@@ -51,21 +22,7 @@
 	input,
 	button,
 	a {
-		color: #007bff;
-		text-decoration: none;
-		width: fit-content;
-		text-align: center;
-		padding: 0.75rem 0;
-		background-color: #fff;
-		border: 1px solid #dee2e6;
-		border-radius: 0.25rem;
-		font-weight: normal;
-		font-size: medium;
-
-		&:hover {
-			background-color: #e9ecef;
-			cursor: pointer;
-		}
+		@include defaultStyles.button;
 	}
 
 	display: flex;

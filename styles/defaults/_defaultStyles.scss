@@ -1,0 +1,148 @@
+$primaryColor: #00bcd4;
+$secondaryColor: #ddd;
+$errorColor: #f44336;
+$successColor: #4caf50;
+
+@mixin button {
+	background-color: $secondaryColor;
+	border: none;
+	color: invert($color: $primaryColor);
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 4px;
+
+	&:hover {
+		background-color: darken($secondaryColor, 5%);
+		transition: background-color 0.2s ease-in;
+	}
+}
+
+@mixin input {
+	width: auto;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid $secondaryColor;
+	border-radius: 4px;
+	box-sizing: border-box;
+	text-align: center;
+
+	&:focus {
+		border-color: $primaryColor;
+		outline: none;
+		background-color: mix($secondaryColor, $primaryColor, 50%);
+		transition: border-color 0.2s ease-in;
+	}
+}
+
+@mixin table {
+	border-collapse: collapse;
+	width: 100%;
+
+	tr {
+		border-bottom: 1px solid $secondaryColor;
+		width: max-content;
+
+		th {
+			vertical-align: bottom;
+			border-bottom: 2px solid $secondaryColor;
+			border-left: 1px solid darken($secondaryColor, 5%);
+			border-right: 1px solid darken($secondaryColor, 5%);
+			border-top: 1px solid $secondaryColor;
+			padding: 0.75rem;
+			font-weight: 700;
+			width: max-content;
+			background-color: lighten($secondaryColor, 10%);
+		}
+
+		td {
+			vertical-align: top;
+			border-left: 1px solid $secondaryColor;
+			border-right: 1px solid $secondaryColor;
+			padding: 0.75rem;
+			width: max-content;
+		}
+	}
+}
+
+@mixin link {
+	color: $primaryColor;
+	text-decoration: none;
+	transition: color 0.2s ease-in;
+
+	&:hover {
+		color: darken($primaryColor, 5%);
+		transition: color 0.2s ease-in;
+	}
+}
+
+@mixin list {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+
+	li {
+		margin: 10px 0;
+		padding: 10px;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background-color: $secondaryColor;
+		border-radius: 5px;
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			background-color: darken($secondaryColor, 10%);
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+		}
+
+		a {
+			&:before {
+				position: absolute;
+				content: '';
+				display: block;
+				width: 1.2rem;
+				height: 1.2rem;
+				background-size: cover;
+				background-position: center;
+				left: 1rem;
+			}
+			@include link;
+		}
+	}
+}
+
+@mixin list-leftsided {
+	align-items: flex-start;
+	justify-content: flex-start;
+	width: max-content;
+}
+
+@mixin list-with-rows {
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	max-width: 100%;
+
+	li {
+		margin: 5px;
+		padding: 0;
+		max-width: max-content;
+	}
+}
