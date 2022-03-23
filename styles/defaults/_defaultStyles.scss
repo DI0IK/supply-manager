@@ -17,7 +17,7 @@ $successColor: #4caf50;
 	border-radius: 4px;
 
 	&:hover {
-		background-color: darken($secondaryColor, 5%);
+		background-color: darken($secondaryColor, 10%);
 		transition: background-color 0.2s ease-in;
 	}
 }
@@ -76,7 +76,7 @@ $successColor: #4caf50;
 	transition: color 0.2s ease-in;
 
 	&:hover {
-		color: darken($primaryColor, 5%);
+		color: darken($primaryColor, 10%);
 		transition: color 0.2s ease-in;
 	}
 }
@@ -103,12 +103,10 @@ $successColor: #4caf50;
 		justify-content: center;
 		background-color: $secondaryColor;
 		border-radius: 5px;
-		box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 		transition: all 0.2s ease-in-out;
 
 		&:hover {
 			background-color: darken($secondaryColor, 10%);
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 		}
 
 		a {
