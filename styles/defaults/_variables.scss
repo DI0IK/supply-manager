@@ -1,0 +1,50 @@
+$--primaryColor: --primaryColor;
+$--secondaryColor: --secondaryColor;
+$--errorColor: --errorColor;
+$--successColor: --successColor;
+$--backgroundColor: --backgroundColor;
+$--lightenedBackgroundColor: --lightenedBackgroundColor;
+$--darkenedSecondaryColor10: --darkenedSecondaryColor10;
+$--darkenedSecondaryColor5: --darkenedSecondaryColor5;
+$--darkenedErrorColor10: --darkenedErrorColor10;
+$--mixedPrimarySecondaryColor: --mixedPrimarySecondaryColor;
+$--invertedPrimaryColor: --invertedPrimaryColor;
+
+$theme-map-light: (
+	$--primaryColor: #00bcd4,
+	$--secondaryColor: #ddd,
+	$--errorColor: #f44336,
+	$--successColor: #4caf50,
+	$--backgroundColor: #fafafa,
+	$--lightenedBackgroundColor: #f5f5f5,
+	$--darkenedSecondaryColor10: #888,
+	$--darkenedSecondaryColor5: #bbb,
+	$--darkenedErrorColor10: #f2291a,
+	$--mixedPrimarySecondaryColor: #00bcd4,
+	$--invertedPrimaryColor: #fc9a3e,
+);
+
+$theme-map-dark: (
+	$--primaryColor: #00bcd4,
+	$--secondaryColor: #555,
+	$--errorColor: #f44336,
+	$--successColor: #4caf50,
+	$--backgroundColor: #212121,
+	$--lightenedBackgroundColor: #333,
+	$--darkenedSecondaryColor10: #666,
+	$--darkenedSecondaryColor5: #aaa,
+	$--darkenedErrorColor10: #f2291a,
+	$--mixedPrimarySecondaryColor: #00bcd4,
+	$--invertedPrimaryColor: #fc9a3e,
+);
+
+$themes: (
+	'light': $theme-map-light,
+	'dark': $theme-map-dark,
+);
+
+@mixin spread-map($map: ()) {
+	@each $key, $value in $map {
+		#{$key}: $value;
+	}
+}

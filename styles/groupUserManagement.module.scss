@@ -1,7 +1,7 @@
 @use 'defaults/defaultStyles';
 
 .groupsUserManagement {
-	background-color: #f5f5f5;
+	background-color: var(--lightenedBackgroundColor);
 	padding: 20px;
 
 	ul {

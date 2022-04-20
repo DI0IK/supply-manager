@@ -1,3 +1,12 @@
+@use 'defaults/variables';
+
+:root.darkMode {
+	@include variables.spread-map(variables.$theme-map-dark);
+}
+:root.lightMode {
+	@include variables.spread-map(variables.$theme-map-light);
+}
+
 html,
 body {
 	padding: 0;
@@ -6,6 +15,7 @@ body {
 		Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 	overflow-x: hidden;
 	height: 100%;
+	background-color: var(--backgroundColor);
 }
 
 a {
@@ -14,6 +24,7 @@ a {
 
 * {
 	box-sizing: border-box;
+	transition: background-color 0.4s ease-out, color 0.4s ease-out;
 }
 
 ul#header {
@@ -23,7 +34,7 @@ ul#header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #fafafa;
+	background-color: var(--lightenedBackgroundColor);
 	border-bottom: 1px solid #eaeaea;
 	height: 60px;
 }
@@ -34,10 +45,11 @@ ul#header li {
 	padding: 0;
 }
 
-ul#header li a {
+ul#header li a,
+ul#header li > div {
 	display: block;
 	padding: 0 20px;
 	line-height: 60px;
 	text-decoration: none;
-	color: #333;
+	color: var(--primaryColor);
 }

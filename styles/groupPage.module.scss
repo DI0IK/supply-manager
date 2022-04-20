@@ -2,6 +2,13 @@
 
 .table {
 	@include defaultStyles.table;
+
+	input {
+		background-color: var(--darkenedSecondaryColor10);
+		border-radius: 4px;
+		border-color: var(--backgroundColor);
+		color: var(--primaryColor);
+	}
 }
 
 .tableWrapper {
@@ -9,8 +16,8 @@
 }
 
 .header {
-	background-color: #f8f9fa;
-	border-bottom: 1px solid #dee2e6;
+	background-color: var(--lightenedBackgroundColor);
+	border-bottom: 1px solid #eaeaea;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -30,7 +37,7 @@
 	align-items: center;
 	flex-wrap: wrap;
 
-	background-color: #fff;
+	background-color: var(--backgroundColor);
 }
 
 .expired {
