@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { Session, User } from '../managers/userManager';
 import utilCss from '../styles/util.module.scss';
 
@@ -15,6 +16,8 @@ const translations: {
 		Login: 'Login',
 		Register: 'Register',
 		Settings: 'Settings',
+		darkMode: 'Dark Mode',
+		lightMode: 'Light Mode',
 	},
 	'de-DE': {
 		Home: 'Hauptseite',
@@ -23,6 +26,8 @@ const translations: {
 		Login: 'Anmelden',
 		Register: 'Registrieren',
 		Settings: 'Einstellungen',
+		darkMode: 'Dunkler Modus',
+		lightMode: 'Heller Modus',
 	},
 };
 
@@ -37,6 +42,35 @@ export default function Header({
 }) {
 	const router = useRouter();
 	const translation = translations[router.locale || 'en-US'];
+
+	const initialValueDarkMode =
+		typeof window === 'undefined'
+			? 'light'
+			: document.cookie.split('style=')[1]?.split(';')[0] || 'light';
+
+	let [style, _setStyle] = useState(initialValueDarkMode);
+	const styles = ['dark', 'light'];
+
+	function iterateStyle() {
+		let index = styles.indexOf(style);
+		if (index === -1) {
+			index = 0;
+		}
+		const indexNew = (index + 1) % styles.length;
+		_setStyle(styles[indexNew]);
+		document.cookie = `style=${styles[indexNew]}; path=/`;
+		if (typeof window !== 'undefined') {
+			document.body.parentElement?.classList.remove(styles[index] + 'Mode');
+			document.body.parentElement?.classList.add(styles[indexNew] + 'Mode');
+		}
+	}
+	function getNextStyle() {
+		return styles[(styles.indexOf(style) + 1) % styles.length];
+	}
+
+	if (typeof window !== 'undefined') {
+		document.body.parentElement?.classList.add(`${style}Mode`);
+	}
 
 	return (
 		<div className={className || ''}>
@@ -106,6 +140,9 @@ export default function Header({
 								</ul>
 							</div>
 						</div>
+					</li>
+					<li>
+						<a onClick={() => iterateStyle()}>{translation[getNextStyle() + 'Mode']}</a>
 					</li>
 				</ul>
 			</div>

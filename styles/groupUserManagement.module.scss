@@ -1,0 +1,23 @@
+@use 'defaults/defaultStyles';
+
+.groupsUserManagement {
+	background-color: var(--lightenedBackgroundColor);
+	padding: 20px;
+
+	ul {
+		@include defaultStyles.list;
+		@include defaultStyles.list-leftsided;
+		@include defaultStyles.list-with-rows;
+	}
+
+	button {
+		margin-top: 20px;
+		padding: 0.4rem;
+
+		@include defaultStyles.button;
+	}
+
+	input {
+		@include defaultStyles.input;
+	}
+}

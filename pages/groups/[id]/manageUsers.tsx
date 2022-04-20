@@ -4,6 +4,7 @@ import { getUsers, Session, User, validateSession } from '../../../managers/user
 import Layout from '../../../components/layout';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import css from '../../../styles/groupUserManagement.module.scss';
 
 const translations: {
 	[key: string]: {
@@ -115,32 +116,34 @@ export default function AddUserToGroup(props: {
 				<title>{translation.Title}</title>
 			</Head>
 			<Layout data={props}>
-				<h2>
-					{translation.UsersInGroup} {props.group.name}
-				</h2>
-				<ul>
-					{props.users
-						.filter((user) => user.inGroup)
-						.map((user) => (
-							<li key={user.id}>
+				<div className={css.groupsUserManagement}>
+					<h2>
+						{translation.UsersInGroup} {props.group.name}:
+					</h2>
+					<ul>
+						{props.users
+							.filter((user) => user.inGroup)
+							.map((user) => (
+								<li key={user.id}>
+									{user.name}
+									<button onClick={removeUserFromGroup}>Remove</button>
+								</li>
+							))}
+					</ul>
+					<h2>{translation.AddUserToGroup}:</h2>
+					<datalist id="users">
+						{props.users.map((user) => (
+							<option key={user.id} value={user.name}>
 								{user.name}
-								<button onClick={removeUserFromGroup}>Remove</button>
-							</li>
+							</option>
 						))}
-				</ul>
-				<h2>{translation.AddUserToGroup}</h2>
-				<datalist id="users">
-					{props.users.map((user) => (
-						<option key={user.id} value={user.name}>
-							{user.name}
-						</option>
-					))}
-				</datalist>
-				<span>
-					<label>{translation.User}: </label>
-				</span>
-				<input list="users" autoComplete="on" id="userId" />
-				<button onClick={addUserToGroup}>{translation.add}</button>
+					</datalist>
+					<span>
+						<label>{translation.User}: </label>
+					</span>
+					<input list="users" autoComplete="on" id="userId" />
+					<button onClick={addUserToGroup}>{translation.add}</button>
+				</div>
 			</Layout>
 		</>
 	);
