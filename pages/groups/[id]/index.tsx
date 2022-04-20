@@ -62,7 +62,7 @@ export default function GroupPage(props: {
 	const router = useRouter();
 	const translation = translations[router.locale || 'en-US'];
 
-	const [sort, setSorting] = useState('barcode');
+	const [sort, setSorting] = useState('expiration_date');
 	const [sortDirection, setSortDirection] = useState(1);
 
 	const deleteGroup = (e: any) => {
@@ -179,7 +179,6 @@ export default function GroupPage(props: {
 
 	const sortedProducts = [...props.products];
 	sortedProducts.sort((a, b) => {
-		console.log(sort, sortDirection);
 		if ((a as any)[sort] < (b as any)[sort]) {
 			return -1 * sortDirection;
 		}
@@ -228,9 +227,9 @@ export default function GroupPage(props: {
 									{translation.barcode}
 								</th>
 								<th
-									onClick={() => changeSorting('name')}
+									onClick={() => changeSorting('product_name')}
 									className={
-										sort === 'name'
+										sort === 'product_name'
 											? groupPage['sortDirection_' + sortDirection]
 											: undefined
 									}
@@ -248,9 +247,9 @@ export default function GroupPage(props: {
 									{translation.quantity}
 								</th>
 								<th
-									onClick={() => changeSorting('expirationDate')}
+									onClick={() => changeSorting('expiration_date')}
 									className={
-										sort === 'expirationDate'
+										sort === 'expiration_date'
 											? groupPage['sortDirection_' + sortDirection]
 											: undefined
 									}
@@ -258,9 +257,9 @@ export default function GroupPage(props: {
 									{translation.expirationDate}
 								</th>
 								<th
-									onClick={() => changeSorting('amountPerUnit')}
+									onClick={() => changeSorting('quantity_per_unit')}
 									className={
-										sort === 'amountPerUnit'
+										sort === 'quantity_per_unit'
 											? groupPage['sortDirection_' + sortDirection]
 											: undefined
 									}
@@ -278,9 +277,9 @@ export default function GroupPage(props: {
 									Nutriscore
 								</th>
 								<th
-									onClick={() => changeSorting('amountWanted')}
+									onClick={() => changeSorting('amount_wanted')}
 									className={
-										sort === 'amountWanted'
+										sort === 'amount_wanted'
 											? groupPage['sortDirection_' + sortDirection]
 											: undefined
 									}
@@ -292,7 +291,7 @@ export default function GroupPage(props: {
 						</thead>
 						<tbody>
 							{sortedProducts.map((product) => (
-								<tr key={product.barcode}>
+								<tr key={product.barcode + '-' + product.expiration_date}>
 									<td>{product.barcode}</td>
 									<td>{product.product_name}</td>
 									<td>{product.quantity}</td>
